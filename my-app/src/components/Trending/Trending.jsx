@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import movieApi from "./../../services/movieApi";
 
 import MoviesList from "../MoviesList";
-import Selector from "../Selector.jsx";
+// import Selector from "../Selector.jsx";
 
 export default function Trending() {
   const [searchParams, setSearchParams] = useSearchParams({});
@@ -28,7 +28,7 @@ export default function Trending() {
 
   return (
     <>
-      <Selector />
+      {/* <Selector /> */}
       <MoviesList
         list={movies}
         loading={isLoading}
