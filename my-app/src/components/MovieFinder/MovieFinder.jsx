@@ -1,79 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import getQueryParams from '../../utils/getQueryParams.js';
+import getQueryParams from "../../utils/getQueryParams.js";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import movieApi from './../../services/movieApi';
+import movieApi from "./../../services/movieApi";
 
-import MoviesList from '../MoviesList';
+import MoviesList from "../MoviesList";
 
-export default function MovieFinder () {
-
-  const [query, setQuery] = useState('');
-  const [movies, setMovies] = useState('');
-  const [error, setError] = useState('')
-  const [isLoading, setLoading] = useState(false);
+export default function MovieFinder() {
+  const [query, setQuery] = useState("");
+  const [movies, setMovies] = useState("");
   const [searchParams, setSearchParams] = useSearchParams({});
+  const [page, setPage] = useState(
+    searchParams.get("page") ? parseInt(searchParams.get("page")) : 1
+  );
+  const [pages, setPages] = useState(0);
+  const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
   const location = useLocation();
-  
+
   useEffect(() => {
     const { q } = getQueryParams(location.search);
 
-    if(q){
-      fetchMovies(q)
-    };
+    if (q) {
+      fetchMovies(q);
+    }
+  }, []);
 
-  }, [])
-
-
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetchMovies(query);
+    fetchMovies(query, page);
 
-    setSearchParams({ q: query })
-
+    setSearchParams({ q: query });
   };
 
-  const fetchMovies = searchValue => {
-      movieApi
-      .searchMovieWithQuery(searchValue)
-        .then(result => {
-          setMovies(result);
-        })
-        .catch(error => setError(error))
-        .finally(() => setLoading(false))
+  const fetchMovies = (searchValue, page) => {
+    movieApi
+      .searchMovieWithQuery(searchValue, page)
+      .then((result) => {
+        setMovies(result.results);
+        setPages(parseInt(result.total_pages));
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   };
 
-  
   return (
     <FormStyled>
-      <form onSubmit={e => handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <label>
-          <input 
+          <input
             type="search"
             value={query}
-            placeholder=' find movie..'
-            onChange={e => setQuery(e.target.value)}
+            placeholder=" find movie.."
+            onChange={(e) => setQuery(e.target.value)}
           />
-          <button 
-            type="submit">
+          <button className="search" type="submit">
             Search
           </button>
         </label>
       </form>
-      <MoviesList 
-        list={movies} 
-        loading={isLoading} 
-        error={error} 
-        title={'Movies'}
+      <MoviesList
+        list={movies}
+        loading={isLoading}
+        error={error}
+        title={"Movies"}
+        total_pages={pages}
       />
     </FormStyled>
   );
-};
-
+}
 
 const FormStyled = styled.div`
   padding: 0 2rem;
@@ -84,18 +83,17 @@ const FormStyled = styled.div`
     width: 60vw;
     height: 5vh;
     border-radius: 5px;
-    border: .05px solid gray;
-  };
-  
-  button {
+    border: 0.05px solid gray;
+  }
+
+  .search {
     height: 5vh;
-    width: 8vw;
-    margin-left: .7rem;
-    border: .05px solid gray;
+    /* width: 8vw; */
+    margin-left: 0.7rem;
+    border: 0.05px solid gray;
     background-color: rgba(46, 46, 50, 1);
     font-size: 1rem;
     color: white;
     border-radius: 5px;
-  };
+  }
 `;
-

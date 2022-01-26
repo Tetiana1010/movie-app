@@ -1,49 +1,51 @@
-import React from 'react';
+import React from "react";
 import { useLocation } from "react-router-dom";
 
-import styled from 'styled-components';
-import CustomLink from '../CastomLink.jsx'
-import Nofitication from '../Nofitication';
+import styled from "styled-components";
+import CustomLink from "../CastomLink.jsx";
+import Nofitication from "../Nofitication";
+import Rate from "../Rating.jsx";
+import PaginationContainer from "../PaginationContainer.jsx";
 
-
-
-export default function MoviesList({ loading, list, error, title }) {
-
+export default function MoviesList({
+  loading,
+  list,
+  error,
+  title,
+  total_pages,
+}) {
   const location = useLocation();
-  
+
   return (
     <ListStyled>
-      { error && <Nofitication message={error}/> }
-      { loading && <Nofitication message="Loading..." /> }
-          { list.length > 0  &&  
-            <div>
-              <h1>{title}</h1>
-              <div className='movieContainer'>
-                {list.map(movie => 
-                    <div className='movieItem' key={movie.id}>
-                      <img src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`} alt={movie.title} />
-                        <CustomLink to={`/movies/${movie.id}`}
-                            state={{ from: location}}>
-                            {movie.title}
-                        </CustomLink>
-                    </div>
-                  )}
+      {error && <Nofitication message={error} />}
+      {loading && <Nofitication message="Loading..." />}
+      {list.length > 0 && (
+        <div>
+          <h1>{title}</h1>
+          <div className="movieContainer">
+            {list.map((movie) => (
+              <div className="movieItem" key={movie.id}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
+                  alt={movie.title}
+                />
+                <CustomLink
+                  to={`/movies/${movie.id}`}
+                  state={{ from: location }}
+                >
+                  {movie.title}
+                </CustomLink>
+                <Rate rate={movie.vote_average} />
               </div>
-            </div>
-          } 
+            ))}
+          </div>
+          <PaginationContainer total_pages={total_pages} />
+        </div>
+      )}
     </ListStyled>
   );
-};
-
-
-            // <ul> {list.map(movie => 
-            //   <li key={movie.id}>
-            //     <Link 
-            //       to={`/movies/${movie.id}`}>
-            //       {movie.title}
-            //     </Link>   
-            //   </li>
-            // </ul>)
+}
 
 const ListStyled = styled.div`
   padding: 0 2rem;
@@ -56,9 +58,8 @@ const ListStyled = styled.div`
     gap: 2rem;
     .movieItem {
       padding: 1rem;
-      -webkit-box-shadow: -6px 5px 15px -11px #000000; 
+      -webkit-box-shadow: -6px 5px 15px -11px #000000;
       box-shadow: -6px 5px 15px -11px #000000;
-    };
-  };
-
+    }
+  }
 `;

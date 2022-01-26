@@ -2,19 +2,19 @@ import axios from 'axios';
 
 const baseURL = 'https://api.themoviedb.org';
 
-const fetchTrendingWithQuery = () => {
+const fetchTrendingWithQuery = (page = 1, ) => {
   return (  
     axios
-      .get(`${baseURL}/3/trending/movie/day?api_key=2815bb4c9c06084df81dd7d6acbff60a`)
-      .then(response => response.data.results)
+      .get(`${baseURL}/3/trending/movie/day?page=${page}&api_key=2815bb4c9c06084df81dd7d6acbff60a`)
+      .then(response => response.data)
   );
 };
 
-const searchMovieWithQuery = movie => {
+const searchMovieWithQuery = (movie, page = 1 )=> {
   return (  
     axios
-      .get(`${baseURL}/3/search/movie?api_key=2815bb4c9c06084df81dd7d6acbff60a&query=${movie}`)
-      .then(response => response.data.results)
+      .get(`${baseURL}/3/search/movie?page=${page}&api_key=2815bb4c9c06084df81dd7d6acbff60a&query=${movie}`)
+      .then(response => response.data)
   );
 };
 

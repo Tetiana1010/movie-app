@@ -1,9 +1,5 @@
-import React from 'react';
+import React from "react";
 
 export default function Nofitication({ message }) {
-  return (
-    <h1>
-      {message}
-    </h1>
-  );
-};
+  return <h1>{message}</h1>;
+}

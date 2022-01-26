@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { NavLink} from 'react-router-dom';
-import routes from '../routes';
+import React from "react";
+import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+import routes from "../routes";
 
 export default function Navbar() {
   return (
@@ -16,7 +16,7 @@ export default function Navbar() {
       </ul>
     </NavbarStyled>
   );
-};
+}
 
 const NavbarStyled = styled.nav`
   display: flex;
@@ -35,4 +35,3 @@ const NavbarStyled = styled.nav`
     color: salmon;
   }
 `;
-
